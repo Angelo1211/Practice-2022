@@ -19,7 +19,7 @@ rem Setting the language as C
 set LANGUAGE_FLAGS=/TC
 
 rem Macro defines
-set DEFINES_FLAGS=/D "WIN32" /D "NDEBUG" /D "_CONSOLE" 
+set DEFINES_FLAGS=/D "WIN32" /D "DEBUG" /D "_CONSOLE" 
 
 rem Warnings
 set WARNINGS_FLAGS=/W3 /WX
