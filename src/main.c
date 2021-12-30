@@ -1,48 +1,44 @@
-#ifndef WIN32
-#error This is only valid for windows
-#endif
-
-#define _CRT_SECURE_NO_WARNINGS
-#define WIN_LEAN_AND_MEAN
-#include <windows.h>
-
-#pragma comment(lib, "User32.lib")
+#pragma comment(lib, "user32.lib")
 
 LRESULT CALLBACK
-WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+WindowProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	return DefWindowProc(hwnd, msg, wp, lp);
 }
 
 int main(int argc, char *argv[])
 {
-	DWORD last_error;
 	WNDCLASSEX wc = {0};
 	wc.cbSize = sizeof(wc);
 	wc.lpfnWndProc = WindowProc;
-	wc.lpszClassName = "Basic Window Class";
 	wc.hInstance = GetModuleHandle(0);
+	wc.lpszClassName = "Default Window Class";
 
-	if ( !RegisterClassEx(&wc) )
-		last_error = GetLastError();
+	RegisterClassEx(&wc);
 
-	HWND hwnd = CreateWindowEx(0,
-							   wc.lpszClassName,
-							   "Hello World",
+	HWND hwnd = CreateWindowEx(0, wc.lpszClassName,
+							   "Test Window",
 							   WS_OVERLAPPEDWINDOW,
-							   100, 50, 1280, 720,
+							   0, 0, 1280, 720,
 							   0, 0, wc.hInstance, 0);
-	if (!hwnd)
-		last_error = GetLastError();
-
 	assert(hwnd);
 
-	ShowWindow(hwnd, SW_SHOW);
+	ShowWindow(hwnd, 1);
 
-	MSG msg = {0};
-	while (GetMessage(&msg, NULL, 0, 0) > 0)
+	b32 running = true;
+	while (running)
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		MSG msg;
+		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		{
+			if (msg.message == WM_QUIT)
+			{
+				running = false;
+				break;
+			}
+
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 	}
 }
