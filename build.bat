@@ -19,7 +19,7 @@ rem Setting the language as C
 set LANGUAGE_FLAGS=/TC
 
 rem Macro defines
-set DEFINES_FLAGS=/D "WIN32" /D "DEBUG" /D "_CONSOLE" 
+set DEFINES_FLAGS=/D "WIN32" /D "DEBUG" /D "_CONSOLE" /D "_CRT_SECURE_NO_WARNINGS"
 
 rem Warnings
 set WARNINGS_FLAGS=/W3 /WX
@@ -42,4 +42,4 @@ set INTERMEDIATE_FILES=/Fo"build/practice.obj" /Fd"build/vc140.pdb"
 rem All compiler & linker setup flags combined
 set COMPILER_FLAGS=%LANGUAGE_FLAGS% %DEFINES_FLAGS% %WARNINGS_FLAGS% %DEBUG_FLAGS% %EXTENSION_FLAGS% %PERF_FLAGS%
 
-cl %COMPILER_FLAGS% %INTERMEDIATE_FILES% %EXECUTABLE_PATH% src/unity.c
+cl %COMPILER_FLAGS% %INTERMEDIATE_FILES% %EXECUTABLE_PATH% src/winmain.c
