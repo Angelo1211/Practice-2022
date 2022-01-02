@@ -1,12 +1,11 @@
 #include "unity.c"
 
 #define WIN_LEAN_AND_MEAN
-#include <windows.h>
+#include "windows.h"
 
 #pragma comment(lib, "user32.lib")
 
-fn void
-Enable_Printf()
+void Console_Init()
 {
 	if (AttachConsole(-1) || AllocConsole())
 	{
@@ -18,32 +17,36 @@ Enable_Printf()
 LRESULT CALLBACK
 WindowProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
+	LRESULT result = 0;
+
 	switch (msg)
 	{
-	case WM_DESTROY:
-	{
-		PostQuitMessage(0);
-		return 0;
+	case WM_DESTROY: PostQuitMessage(0); break;
+
+	default:
+		result = DefWindowProc(hwnd, msg, wp, lp);
 	}
-	break;
-	}
-	return DefWindowProc(hwnd, msg, wp, lp);
+
+	return result;
 }
 
 INT WINAPI
-WinMain(HINSTANCE instance, HINSTANCE prevInstance, PSTR cmd, INT show)
+WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, INT nCmdShow)
 {
+	Console_Init();
+	printf("Hello World!\n");
 
 	WNDCLASSEX wc = {0};
 	wc.cbSize = sizeof(wc);
-	wc.hInstance = instance;
+	wc.hInstance = hInstance;
+	wc.lpszClassName = "Default Class";
 	wc.lpfnWndProc = WindowProc;
-	wc.lpszClassName = "Default class";
 
 	RegisterClassEx(&wc);
 
-	HWND hwnd = CreateWindowEx(0, wc.lpszClassName, "Test Window", WS_OVERLAPPEDWINDOW,
-							   100, 100, 1280, 720, 0, 0, instance, 0);
+	HWND hwnd = CreateWindowEx(0, wc.lpszClassName, "Default window",
+							   WS_OVERLAPPEDWINDOW, 100, 100, 1280, 720,
+							   0, 0, hInstance, 0);
 	assert(hwnd);
 
 	ShowWindow(hwnd, 1);
@@ -56,12 +59,9 @@ WinMain(HINSTANCE instance, HINSTANCE prevInstance, PSTR cmd, INT show)
 		{
 			if (msg.message == WM_QUIT)
 				running = false;
+
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 	}
-
-	Enable_Printf();
-	printf("Program is done!\n");
-	return 0;
 }
