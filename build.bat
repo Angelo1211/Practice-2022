@@ -16,7 +16,10 @@ IF EXIST "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxi
 )
 
 rem Setting the language as C
-set LANGUAGE_FLAGS=/TC
+rem set LANGUAGE_FLAGS=/TC
+
+rem Setting the language as C++
+set LANGUAGE_FLAGS=/TP
 
 rem Macro defines
 set DEFINES_FLAGS=/D "WIN32" /D "DEBUG" /D "_CONSOLE" /D "_CRT_SECURE_NO_WARNINGS"
